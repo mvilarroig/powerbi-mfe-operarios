@@ -318,8 +318,9 @@
   .slicers { flex: none; justify-content: flex-start; gap: 12px; padding: 10px 0; overflow: visible; }
 }
 
-/* Pantalla ancha: donut y eficiencia uno al lado del otro */
-@media (min-width: 1200px) {
+/* Solo en pantallas grandes de verdad (≥1600px) el donut y la eficiencia van
+   uno al lado del otro. Por debajo se apilan para verse bien. */
+@media (min-width: 1600px) {
   .bottom-row { grid-template-columns: 1fr 1fr; }
 }
 
