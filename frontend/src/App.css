@@ -99,11 +99,12 @@
   min-width: 20px; height: 20px; padding: 0 6px; border-radius: 10px;
   display: inline-flex; align-items: center; justify-content: center;
 }
-/* Slicers distribuidos de arriba a abajo; el botón de limpiar se ancla abajo */
+/* Slicers distribuidos de arriba a abajo; hacen scroll interno si no caben.
+   space-between reparte el hueco cuando sobra altura; si falta, se desplazan. */
 .slicers {
   flex: 1; min-height: 0;
-  display: flex; flex-direction: column; justify-content: space-between;
-  padding: 14px 0 12px;
+  display: flex; flex-direction: column; justify-content: space-between; gap: 10px;
+  padding: 14px 6px 12px 0; overflow-y: auto;
 }
 .slicer-loading { color: var(--muted); font-size: 13px; text-align: center; padding: 20px 0; }
 .filter-actions { display: flex; flex-direction: column; gap: 7px; flex-shrink: 0; }
@@ -215,32 +216,36 @@
 .slicer-option:hover { background: var(--hover); }
 
 /* ── Contenido (scrollable) ────────────────────────────── */
-.content { flex: 1; display: flex; flex-direction: column; gap: 10px; min-width: 0; min-height: 0; overflow-y: auto; padding-right: 10px; }
+.content { flex: 1; display: flex; flex-direction: column; gap: 10px; min-width: 0; min-height: 0; overflow-y: auto; overflow-x: hidden; padding-right: 10px; }
 
 /* ── Barras de desplazamiento según el tema ────────────── */
-.content, .scroll-chart, .slicer-menu, .sector-menu { scrollbar-width: thin; scrollbar-color: var(--scroll-thumb) var(--scroll-track); }
+.content, .scroll-chart, .slicers, .slicer-menu, .sector-menu { scrollbar-width: thin; scrollbar-color: var(--scroll-thumb) var(--scroll-track); }
 .content::-webkit-scrollbar,
 .scroll-chart::-webkit-scrollbar,
+.slicers::-webkit-scrollbar,
 .slicer-menu::-webkit-scrollbar,
-.sector-menu::-webkit-scrollbar { width: 10px; height: 10px; }
+.sector-menu::-webkit-scrollbar { width: 8px; height: 8px; }
 .content::-webkit-scrollbar-track,
 .scroll-chart::-webkit-scrollbar-track,
+.slicers::-webkit-scrollbar-track,
 .slicer-menu::-webkit-scrollbar-track,
 .sector-menu::-webkit-scrollbar-track { background: var(--scroll-track); border-radius: 8px; }
 .content::-webkit-scrollbar-thumb,
 .scroll-chart::-webkit-scrollbar-thumb,
+.slicers::-webkit-scrollbar-thumb,
 .slicer-menu::-webkit-scrollbar-thumb,
 .sector-menu::-webkit-scrollbar-thumb { background: var(--scroll-thumb); border-radius: 8px; border: 2px solid var(--scroll-track); }
 .content::-webkit-scrollbar-thumb:hover,
-.scroll-chart::-webkit-scrollbar-thumb:hover { background: var(--indigo); }
+.scroll-chart::-webkit-scrollbar-thumb:hover,
+.slicers::-webkit-scrollbar-thumb:hover { background: var(--indigo); }
 
 .error-banner {
   background: #fef2f2; border: 1px solid #fecaca; color: #b91c1c;
   padding: 8px 12px; border-radius: 8px; font-size: 13px;
 }
 
-/* KPIs */
-.kpi-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+/* KPIs — se reorganizan según el ancho disponible (3 → 2 → 1 columnas) */
+.kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
 .kpi-card {
   position: relative; overflow: hidden;
   background: var(--panel); border: 1px solid var(--border); border-radius: 14px;
@@ -264,7 +269,7 @@
 .panel {
   background: var(--panel); border: 1px solid var(--border); border-radius: 12px;
   padding: 12px 14px; box-shadow: 0 1px 3px rgba(0,0,0,.05);
-  display: flex; flex-direction: column;
+  display: flex; flex-direction: column; min-width: 0;   /* permite encogerse en el grid */
 }
 .panel-tall { min-height: 470px; }
 .panel-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; flex-wrap: wrap; gap: 6px; }
@@ -296,18 +301,26 @@
 }
 .back-btn:hover { background: var(--hover); }
 
-.bottom-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; align-items: stretch; }
-.scroll-chart { flex: 1; max-height: 420px; overflow-y: auto; }
+/* Donut + Eficiencia: apilados por defecto (pantalla pequeña),
+   lado a lado en pantallas anchas (ver media query ≥1200px). */
+.bottom-row {
+  display: grid; gap: 10px; align-items: stretch;
+  grid-template-columns: 1fr;
+}
+.scroll-chart { flex: 1; max-height: 460px; overflow-y: auto; overflow-x: hidden; }
 
 /* ── Responsive ────────────────────────────────────────── */
 @media (max-width: 880px) {
   .app { height: auto; overflow: visible; }
   .layout { flex-direction: column; overflow: visible; }
-  .content { overflow-y: visible; min-height: auto; }
+  .content { overflow-y: visible; overflow-x: visible; min-height: auto; padding-right: 0; }
   .filter-panel { width: 100%; overflow: visible; }
-  .slicers { flex: none; justify-content: flex-start; gap: 12px; padding: 10px 0; }
-  .kpi-row { grid-template-columns: 1fr; }
-  .bottom-row { grid-template-columns: 1fr; }
+  .slicers { flex: none; justify-content: flex-start; gap: 12px; padding: 10px 0; overflow: visible; }
+}
+
+/* Pantalla ancha: donut y eficiencia uno al lado del otro */
+@media (min-width: 1200px) {
+  .bottom-row { grid-template-columns: 1fr 1fr; }
 }
 
 @media (max-width: 520px) {

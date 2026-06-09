@@ -24,7 +24,7 @@ export default function EfficiencyBar({ data, dark }) {
 
   const option = {
     animation: true, animationDuration: 450,
-    grid: { left: 10, right: 95, top: 22, bottom: 8, containLabel: true },
+    grid: { left: 10, right: 64, top: 22, bottom: 8, containLabel: true },
     tooltip: {
       trigger: 'axis', axisPointer: { type: 'shadow' },
       formatter: (params) => {
@@ -33,7 +33,7 @@ export default function EfficiencyBar({ data, dark }) {
       },
     },
     xAxis: {
-      type: 'value', max: Math.max(1.12, Math.max(...data.map(d => d.ef)) * 1.08),
+      type: 'value', max: Math.max(1.15, Math.max(...data.map(d => d.ef)) * 1.1),
       axisLabel: { show: false }, splitLine: { show: true, lineStyle: { color: gridLine, type: 'dashed' } },
       axisTick: { show: false }, axisLine: { show: false },
     },
@@ -50,7 +50,7 @@ export default function EfficiencyBar({ data, dark }) {
         lineStyle: { color: targetColor, type: 'dashed', width: 1.5 },
         label: {
           show: true, position: 'insideEndTop', formatter: 'Objetivo 100%',
-          color: targetColor, fontSize: 10, fontWeight: 700,
+          color: targetColor, fontSize: 10, fontWeight: 700, align: 'right',
         },
         data: [{ xAxis: 1 }],
       },
