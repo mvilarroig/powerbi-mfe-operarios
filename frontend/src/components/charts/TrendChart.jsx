@@ -38,17 +38,17 @@ export default function TrendChart({ data, dark }) {
     },
     series: [
       {
-        name: 'Directas', type: 'line', stack: 'h', smooth: 0.4,
+        name: 'Directas', type: 'line', smooth: 0.4,
         symbol: 'circle', symbolSize: 5,
         lineStyle: { width: 2.5 },
-        areaStyle: { opacity: 1, color: grad('rgba(79,124,255,0.45)','rgba(79,124,255,0.04)') },
+        areaStyle: { opacity: 1, color: grad('rgba(79,124,255,0.40)','rgba(79,124,255,0.03)') },
         data: data.map(d => Math.round(d.directas)),
       },
       {
-        name: 'Indirectas', type: 'line', stack: 'h', smooth: 0.4,
+        name: 'Indirectas', type: 'line', smooth: 0.4,
         symbol: 'circle', symbolSize: 5,
         lineStyle: { width: 2.5 },
-        areaStyle: { opacity: 1, color: grad('rgba(245,158,11,0.5)','rgba(245,158,11,0.05)') },
+        areaStyle: { opacity: 1, color: grad('rgba(245,158,11,0.40)','rgba(245,158,11,0.03)') },
         data: data.map(d => Math.round(d.indirectas)),
       },
     ],

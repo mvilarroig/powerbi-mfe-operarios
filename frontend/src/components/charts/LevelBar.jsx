@@ -2,7 +2,8 @@ import ReactECharts from 'echarts-for-react';
 
 const LEVEL_NAMES = ['Región', 'País', 'Ciudad', 'Área', 'Máquina', 'Producto'];
 
-const fmt = (n) => n.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+// Muestra hasta 2 decimales, pero sin ceros sobrantes (432 → "432", 432,5 → "432,5").
+const fmt = (n) => n.toLocaleString('es-ES', { maximumFractionDigits: 2 });
 
 export default function LevelBar({ levelIndex, data, path = [], onDrill, onJump, dark }) {
   const rows = [...data].reverse();
